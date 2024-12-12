@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export const Landing = () => {
     const navigate = useNavigate();
     const handleAuth = () => {
-        navigate('/auth');
+        navigate('/authpage');
     }
     return (
         <div className="min-h-screen bg-white flex items-center justify-center relative py-16">
