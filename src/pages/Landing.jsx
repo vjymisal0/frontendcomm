@@ -40,7 +40,7 @@ export const Landing = () => {
                 {/* Right Content (Image with rounded edges) */}
                 <div className="relative hidden lg:flex items-center justify-center lg:col-span-5">
                     <img
-                        src="../ai_interview.png"
+                        src="./images/ai_interview.png"
                         alt="AI Interview Assistant"
                         className="object-cover w-full h-full rounded-xl shadow-xl"
                     />
