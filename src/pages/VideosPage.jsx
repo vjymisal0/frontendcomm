@@ -1,39 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './VideosPage.css';
-import { useNavigate } from 'react-router-dom';
 
 const VideosPage = () => {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentVideoSrc, setCurrentVideoSrc] = useState("");
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        // Perform authentication check before fetching videos
-        const checkAuthAndFetchVideos = async () => {
+        const fetchVideos = async () => {
             try {
-                // Check for a valid token in localStorage
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    navigate('/signin');
-                    return;
-                }
-
-                // If the token exists, check its validity by making an API request
-                const authResponse = await fetch('https://backend-node-u13c.onrender.com/assessment', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Send token in the request header
-                    }
-                });
-
-                if (!authResponse.ok) {
-                    throw new Error('Authentication failed');
-                }
-
-                // If authentication succeeds, fetch the video data
+                // Fetch video data
                 const videoResponse = await fetch('https://ai-communication-tool.onrender.com/face/get_videos');
                 const data = await videoResponse.json();
 
@@ -41,16 +17,14 @@ const VideosPage = () => {
                 const sortedVideos = data.videos.sort((a, b) => new Date(b.upload_date) - new Date(a.upload_date));
                 setVideos(sortedVideos);
                 setLoading(false);
-
             } catch (error) {
-                console.error('Error during authentication or video fetch:', error);
+                console.error('Error during video fetch:', error);
                 setLoading(false);
-                navigate('/signin'); // Redirect to sign-in on error
             }
         };
 
-        checkAuthAndFetchVideos(); // Trigger the function on initial render
-    }, [navigate]);
+        fetchVideos(); // Trigger the video fetching function on initial render
+    }, []);
 
     const handleVideoClick = (fileId) => {
         const videoUrl = `https://ai-communication-tool.onrender.com/face/video/${fileId}`;
